@@ -36,16 +36,23 @@ const EditStudent = (props) => {
     setData({
       ...data,
       [e.target.name]: e.target.value,
+      student_verification: false,
     });
-    console.log(data);
+  };
+
+  const onStudentVerified = (e) => {
+    setData({
+      ...data,
+      [e.target.name]: e.target.checked,
+    });
   };
 
   const onSubmitStudentData = (e) => {
     e.preventDefault();
     axios
       .post(`http://localhost:4000/all_student/update/${match.params.id}`, data)
-      .then((res) => console.log(res.data));
-    props.history.push('/');
+      .then((res) => console.log(res.data))
+      .then(() => props.history.push('/'));
   };
 
   return (
@@ -128,11 +135,8 @@ const EditStudent = (props) => {
               <Input
                 type="checkbox"
                 name="student_verification"
-                defaultChecked={!!data.student_verification}
-                value={
-                  data.student_verification ? Boolean(true) : Boolean(false)
-                }
-                onChange={onChangeStudentData}
+                checked={data.student_verification}
+                onChange={onStudentVerified}
                 required
               />
               {data.student_verification
